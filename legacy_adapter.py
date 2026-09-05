@@ -3,11 +3,6 @@ from urllib.parse import urljoin
 
 
 def transform_html(html_bytes, base_url):
-    """
-    Transform modern HTML into a simplified format suitable
-    for the legacy client.
-    """
-
     soup = BeautifulSoup(html_bytes, "html.parser")
 
     # Remove elements the legacy client cannot handle
@@ -22,8 +17,8 @@ def transform_html(html_bytes, base_url):
     ]):
         tag.decompose()
 
-    # Remove external stylesheets.
-    # Inline styles are kept.
+    # Remove external stylesheets
+    # Inline styles are kept
     for tag in soup.find_all("link", rel="stylesheet"):
         tag.decompose()
 

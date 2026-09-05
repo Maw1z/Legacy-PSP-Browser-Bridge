@@ -1,6 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
-from legacy_adapter import transform_html
 
 PORT = 8888
 
@@ -30,9 +29,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
             content_type = response.headers.get("Content-Type", "text/html")
             body = response.content
 
-            if "text/html" in content_type:
-                body = transform_html(body, response.url)
-
             self.send_response(response.status_code)
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
@@ -49,14 +45,12 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 pass
 
     def do_POST(self):
-        # Read the POST body
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length)
 
         print(f"[INTERCEPT] POST {self.path}")
         print(f"[INTERCEPT] {body.decode('utf-8', errors='replace')}")
 
-        # Forward upstream as POST
         target = self.path
         if target.startswith("http://"):
             upstream_url = target.replace("http://", "https://", 1)
@@ -78,9 +72,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
             content_type = response.headers.get("Content-Type", "text/html")
             resp_body = response.content
-
-            if "text/html" in content_type:
-                resp_body = transform_html(resp_body, response.url)
 
             self.send_response(response.status_code)
             self.send_header("Content-Type", content_type)
