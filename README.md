@@ -69,3 +69,7 @@ This project demonstrates that the proxy topology is architecturally identical t
 ## Full Writeup
 
 [Dead Protocol Walking (PDF)](Dead%20Protocol%20Walking.docx) — covers PSP TLS history, NetFront limitations, proxy architecture, test results, Wireshark analysis, and security implications.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
